@@ -5,6 +5,8 @@
 #include <stack>
 #include <list>
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -39,6 +41,10 @@ void AddExpr::generateCode(retData* data) {
     retData *data2 = new retData();
     expr1->generateCode(data1);
     expr2->generateCode(data2);
+    string leftVal = data1->place;
+    string rightVal = data2->place;
+
+    string code = string(data1->code) + "\n" + string(data2->code) + "\n";    
 
     releaseTemp(data1->place);
     releaseTemp(data2->place);
@@ -46,32 +52,76 @@ void AddExpr::generateCode(retData* data) {
     string instruction = "add ", place = getTemp();
 
     if(this->expr1->isA(NUM_EXPR)) {
-        instruction = "addi ";
-    }
-    string newCode = strdup(data->code.c_str());
-    newCode += instruction + place + ", " + data1->place + ", " + data2->place + "\n";
-    data->code = newCode;
+        code = data2->code + "\n";
+        code += "addi " + place + ", " + string(data2->place) + ", " + std::to_string(((NumExpr*)expr1)->value);
+	}else if(this->expr2->isA(NUM_EXPR))
+	{
+        code = data1->code + "\n";
+		code += "addi " + place + ", " + string(data1->place) + ", " + std::to_string(((NumExpr*)expr2)->value);
+	}else{
+		code += "add " + place + ", " + string(data1->place) + ", " + string(data2->place);
+	}
+
+    data->code = code;
     data->place = place;
 
-    cout<< "dentro de genCode weon " << data->code;
+    delete data1;
+    delete data2;
 }
 
 void SubExpr::generateCode(retData* data) {
-    data->code = "subExpr";
-    data->place = "$t0";
+    retData *data1 = new retData();
+    retData *data2 = new retData();
+    expr1->generateCode(data1);
+    expr2->generateCode(data2);
+
+    string code = string(data1->code) + "\n" + string(data2->code) + "\n";    
+
+    releaseTemp(data1->place);
+    releaseTemp(data2->place);
+
+    string instruction = "sub ", place = getTemp();
+
+    // if(this->expr1->isA(NUM_EXPR)) {
+    //     instruction = "addi ";
+    // }
+
+    code += instruction + place + ", " + string(data1->place) + ", " + string(data2->place);
+
+    data->code = code;
+    data->place = place;
+
+    delete data1;
+    delete data2;
 }
 
 void MultExpr::generateCode(retData* data) {
-    data->code = "multExpr";
-    data->place = "$t0";
+    retData *data1 = new retData();
+    retData *data2 = new retData();
+    expr1->generateCode(data1);
+    expr2->generateCode(data2);
+
+    string code = string(data1->code) + "\n" + string(data2->code) + "\n";    
+
+    releaseTemp(data1->place);
+    releaseTemp(data2->place);
+
+    string instruction = "mult ", place = getTemp();
+
+    code += instruction + place + ", " + string(data1->place) + ", " + string(data2->place) + "\n";
+    code += "mflo " + place;
+
+    data->code = code;
+    data->place = place;
+
+    delete data1;
+    delete data2;
 }
 
 void NumExpr::generateCode(retData* data) {
     string place = getTemp();
-
-    cout<< "dentro de NumExpr" << endl;
-
-    data->code = "numExpr";
+    string sVal = std::to_string(this->value);
+    data->code = "li " + place + ", " + sVal;
     data->place = place;
 }
 
@@ -79,6 +129,6 @@ void IdExpr::generateCode(retData* data) {
 
     string place = getTemp();
 
-    data->code = "idExpr";
-    data->place = this->id;
+    data->code = "lw " + place + ", " + this->id;
+    data->place = place;
 }

@@ -6,6 +6,8 @@
 #include <iostream>
 #include <stack>
 #include <list>
+#include <stdio.h>
+#include <string.h>
 
 using namespace std;
 
@@ -109,11 +111,10 @@ public:
             Expr *exp = *it;
             
             exp->generateCode(data);
-            cout<< data->code << endl;
+            cout<< data->code;
 
             it++;
         }
-        cout<< endl;
     }
 };
 
