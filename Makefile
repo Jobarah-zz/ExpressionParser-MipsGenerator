@@ -23,8 +23,8 @@ run: $(TARGET)
 
 clean:
 	rm -f *.o
-	rm -f ${PARSER_SRC}.cpp
-	rm -f ${LEXER_SRC}.cpp
+	rm -f ${EXPR_PARSER}
+	rm -f ${EXPR_LEXER}
 	rm -f tokens.h
 	rm -f ${TARGET}
-	rm -f ${TARGET}.output
+	rm -f grammar.output
