@@ -24,11 +24,11 @@ public:
 };
 
 class Expr {
-    public:
-        Expr(){}
-        virtual retData * generateCode() = 0;
-        virtual int getKind() = 0;
-        bool isA(int kind) { return (getKind() == kind); }
+public:
+    Expr(){}
+    virtual retData * generateCode() = 0;
+    virtual int getKind() = 0;
+    bool isA(int kind) { return (getKind() == kind); }
 };
 
 class BinaryExpr: public Expr {
@@ -108,6 +108,7 @@ public:
             Expr *exp = *it;
             
             cout<< exp->generateCode()->code;
+            cout<< "Dentro del while weon" << endl;
 
             it++;
         }

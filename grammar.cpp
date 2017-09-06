@@ -65,15 +65,17 @@
 #line 12 "grammar.y" /* yacc.c:339  */
 
   #include<stdio.h>
+
   extern int yylineno;
   int yylex();
+  
   void yyerror(const char* msg) {
     printf("Line %d: %s\n",yylineno,msg);
   }
 
-  AST * tree;
+  void *tree;
 
-#line 77 "grammar.cpp" /* yacc.c:339  */
+#line 79 "grammar.cpp" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -114,7 +116,7 @@ extern int yydebug;
 
   using namespace std;
 
-#line 118 "grammar.cpp" /* yacc.c:355  */
+#line 120 "grammar.cpp" /* yacc.c:355  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -138,14 +140,14 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 23 "grammar.y" /* yacc.c:355  */
+#line 25 "grammar.y" /* yacc.c:355  */
 
-  char* id_t;
+  char *id_t;
   int num_t;
   Expr *expr_t;
-  AST * ast_t;
+  AST *ast_t;
 
-#line 149 "grammar.cpp" /* yacc.c:355  */
+#line 151 "grammar.cpp" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -162,7 +164,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 166 "grammar.cpp" /* yacc.c:358  */
+#line 168 "grammar.cpp" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -460,8 +462,8 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    42,    42,    45,    46,    49,    50,    51,    54,    55,
-      58,    59,    64
+       0,    44,    44,    50,    51,    54,    55,    56,    59,    60,
+      63,    64,    69
 };
 #endif
 
@@ -1236,77 +1238,80 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 42 "grammar.y" /* yacc.c:1646  */
-    { tree = (yyvsp[0].ast_t); }
-#line 1242 "grammar.cpp" /* yacc.c:1646  */
+#line 44 "grammar.y" /* yacc.c:1646  */
+    {
+  tree = (yyvsp[0].ast_t);
+  ((AST*)tree)->generateCode();
+}
+#line 1247 "grammar.cpp" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 45 "grammar.y" /* yacc.c:1646  */
+#line 50 "grammar.y" /* yacc.c:1646  */
     { (yyval.ast_t) = (yyvsp[-1].ast_t); (yyval.ast_t)->insertExpression((yyvsp[0].expr_t)); }
-#line 1248 "grammar.cpp" /* yacc.c:1646  */
+#line 1253 "grammar.cpp" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 46 "grammar.y" /* yacc.c:1646  */
+#line 51 "grammar.y" /* yacc.c:1646  */
     { (yyval.ast_t) = new AST(); (yyval.ast_t)->insertExpression((yyvsp[0].expr_t)); }
-#line 1254 "grammar.cpp" /* yacc.c:1646  */
+#line 1259 "grammar.cpp" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 49 "grammar.y" /* yacc.c:1646  */
+#line 54 "grammar.y" /* yacc.c:1646  */
     { (yyval.expr_t) = new AddExpr((yyvsp[-2].expr_t), (yyvsp[0].expr_t)); }
-#line 1260 "grammar.cpp" /* yacc.c:1646  */
+#line 1265 "grammar.cpp" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 50 "grammar.y" /* yacc.c:1646  */
+#line 55 "grammar.y" /* yacc.c:1646  */
     { (yyval.expr_t) = new SubExpr((yyvsp[-2].expr_t), (yyvsp[0].expr_t)); }
-#line 1266 "grammar.cpp" /* yacc.c:1646  */
+#line 1271 "grammar.cpp" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 51 "grammar.y" /* yacc.c:1646  */
+#line 56 "grammar.y" /* yacc.c:1646  */
     { (yyval.expr_t) = (yyvsp[0].expr_t); }
-#line 1272 "grammar.cpp" /* yacc.c:1646  */
+#line 1277 "grammar.cpp" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 54 "grammar.y" /* yacc.c:1646  */
+#line 59 "grammar.y" /* yacc.c:1646  */
     { (yyval.expr_t) = new MultExpr((yyvsp[-2].expr_t), (yyvsp[0].expr_t)); }
-#line 1278 "grammar.cpp" /* yacc.c:1646  */
+#line 1283 "grammar.cpp" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 55 "grammar.y" /* yacc.c:1646  */
+#line 60 "grammar.y" /* yacc.c:1646  */
     { (yyval.expr_t) = (yyvsp[0].expr_t); }
-#line 1284 "grammar.cpp" /* yacc.c:1646  */
+#line 1289 "grammar.cpp" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 58 "grammar.y" /* yacc.c:1646  */
+#line 63 "grammar.y" /* yacc.c:1646  */
     { (yyval.expr_t) = new NumExpr((yyvsp[0].id_t)); }
-#line 1290 "grammar.cpp" /* yacc.c:1646  */
+#line 1295 "grammar.cpp" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 59 "grammar.y" /* yacc.c:1646  */
+#line 64 "grammar.y" /* yacc.c:1646  */
     {
     string str = (yyvsp[0].id_t);
     free((yyvsp[0].id_t)); 
     (yyval.expr_t) = new IdExpr(str);
   }
-#line 1300 "grammar.cpp" /* yacc.c:1646  */
+#line 1305 "grammar.cpp" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 64 "grammar.y" /* yacc.c:1646  */
+#line 69 "grammar.y" /* yacc.c:1646  */
     { (yyval.expr_t) = (yyvsp[-1].expr_t); }
-#line 1306 "grammar.cpp" /* yacc.c:1646  */
+#line 1311 "grammar.cpp" /* yacc.c:1646  */
     break;
 
 
-#line 1310 "grammar.cpp" /* yacc.c:1646  */
+#line 1315 "grammar.cpp" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires

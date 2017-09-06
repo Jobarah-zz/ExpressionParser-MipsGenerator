@@ -11,20 +11,22 @@
 
 %{
   #include<stdio.h>
+
   extern int yylineno;
   int yylex();
+  
   void yyerror(const char* msg) {
     printf("Line %d: %s\n",yylineno,msg);
   }
 
-  AST * tree;
+  void *tree;
 %}
 
 %union {
-  char* id_t;
+  char *id_t;
   int num_t;
   Expr *expr_t;
-  AST * ast_t;
+  AST *ast_t;
 }
 
 %token<id_t> ID LIT_INT
@@ -39,7 +41,10 @@
 
 %%
 
-input: ExprList { tree = $1; }
+input: ExprList {
+  tree = $1;
+  ((AST*)tree)->generateCode();
+}
 ;
 
 ExprList: ExprList E { $$ = $1; $$->insertExpression($2); }

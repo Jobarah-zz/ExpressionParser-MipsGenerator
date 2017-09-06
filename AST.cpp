@@ -50,8 +50,6 @@ retData * AddExpr::generateCode() {
     data->code = instruction + place + "," + expr1Data->place + "," + expr2Data->place + "\n";
     data->place = place;
 
-    cout<<data->code;
-
     return data;
 }
 

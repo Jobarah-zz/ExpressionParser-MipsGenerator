@@ -75,12 +75,12 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 23 "grammar.y" /* yacc.c:1909  */
+#line 25 "grammar.y" /* yacc.c:1909  */
 
-  char* id_t;
+  char *id_t;
   int num_t;
   Expr *expr_t;
-  AST * ast_t;
+  AST *ast_t;
 
 #line 86 "tokens.h" /* yacc.c:1909  */
 };
