@@ -44,7 +44,7 @@ void AddExpr::generateCode(retData* data) {
     string leftVal = data1->place;
     string rightVal = data2->place;
 
-    string code = string(data1->code) + "\n" + string(data2->code) + "\n";    
+    string code = data1->code + "\n" + data2->code + "\n";    
 
     releaseTemp(data1->place);
     releaseTemp(data2->place);
@@ -53,13 +53,13 @@ void AddExpr::generateCode(retData* data) {
 
     if(this->expr1->isA(NUM_EXPR)) {
         code = data2->code + "\n";
-        code += "addi " + place + ", " + string(data2->place) + ", " + std::to_string(((NumExpr*)expr1)->value);
+        code += "addi " + place + ", " + data2->place + ", " + std::to_string(((NumExpr*)expr1)->value);
 	}else if(this->expr2->isA(NUM_EXPR))
 	{
         code = data1->code + "\n";
-		code += "addi " + place + ", " + string(data1->place) + ", " + std::to_string(((NumExpr*)expr2)->value);
+		code += "addi " + place + ", " + data1->place + ", " + std::to_string(((NumExpr*)expr2)->value);
 	}else{
-		code += "add " + place + ", " + string(data1->place) + ", " + string(data2->place);
+		code += "add " + place + ", " + data1->place + ", " + data2->place;
 	}
 
     data->code = code;
@@ -75,7 +75,7 @@ void SubExpr::generateCode(retData* data) {
     expr1->generateCode(data1);
     expr2->generateCode(data2);
 
-    string code = string(data1->code) + "\n" + string(data2->code) + "\n";    
+    string code = data1->code + "\n" + data2->code + "\n";    
 
     releaseTemp(data1->place);
     releaseTemp(data2->place);
@@ -86,7 +86,7 @@ void SubExpr::generateCode(retData* data) {
     //     instruction = "addi ";
     // }
 
-    code += instruction + place + ", " + string(data1->place) + ", " + string(data2->place);
+    code += instruction + place + ", " + data1->place + ", " + data2->place;
 
     data->code = code;
     data->place = place;
@@ -101,14 +101,14 @@ void MultExpr::generateCode(retData* data) {
     expr1->generateCode(data1);
     expr2->generateCode(data2);
 
-    string code = string(data1->code) + "\n" + string(data2->code) + "\n";    
+    string code = data1->code + "\n" + data2->code + "\n";    
 
     releaseTemp(data1->place);
     releaseTemp(data2->place);
 
     string instruction = "mult ", place = getTemp();
 
-    code += instruction + place + ", " + string(data1->place) + ", " + string(data2->place) + "\n";
+    code += instruction + place + ", " + data1->place + ", " + data2->place + "\n";
     code += "mflo " + place;
 
     data->code = code;
