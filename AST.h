@@ -26,7 +26,7 @@ public:
 class Expr {
 public:
     Expr(){}
-    virtual retData * generateCode() = 0;
+    virtual void generateCode(retData *data) = 0;
     virtual int getKind() = 0;
     bool isA(int kind) { return (getKind() == kind); }
 };
@@ -46,7 +46,7 @@ class MultExpr: public BinaryExpr {
 public:
     MultExpr(Expr *expr1, Expr *expr2) : BinaryExpr(expr1, expr2) {}
 
-    retData * generateCode();
+    void generateCode(retData *data);
 
     int getKind() { return MULT_EXPR; }
 };
@@ -55,7 +55,7 @@ class AddExpr: public BinaryExpr {
 public:
     AddExpr(Expr *expr1, Expr *expr2): BinaryExpr(expr1, expr2) {}
 
-    retData * generateCode();
+    void generateCode(retData *data);
 
     int getKind() { return ADD_EXPR; }
 };
@@ -64,7 +64,7 @@ class SubExpr: public BinaryExpr {
 public:
     SubExpr(Expr *expr1, Expr *expr2): BinaryExpr(expr1, expr2) {}
 
-    retData * generateCode();
+    void generateCode(retData *data);
 
     int getKind() { return SUB_EXPR; }
 };
@@ -73,7 +73,7 @@ class NumExpr: public Expr {
 public:
     NumExpr(char* value) { this->value = atoi(value); }
 
-    retData * generateCode();
+    void generateCode(retData *data);
 
     int getKind() { return NUM_EXPR; }
 
@@ -84,7 +84,7 @@ class IdExpr: public Expr {
 public:
     IdExpr(string id) { this->id = id; }
     
-    retData * generateCode();
+    void generateCode(retData *data);
 
     int getKind() { return ID_EXPR; }
 
@@ -94,6 +94,7 @@ public:
 class AST {
 public:
     list<Expr*> ExprList;
+    retData *data = new retData();
     AST() {}
 
     void insertExpression(Expr* expr) {
@@ -107,8 +108,8 @@ public:
 
             Expr *exp = *it;
             
-            cout<< exp->generateCode()->code;
-            cout<< "Dentro del while weon" << endl;
+            exp->generateCode(data);
+            cout<< data->code << endl;
 
             it++;
         }

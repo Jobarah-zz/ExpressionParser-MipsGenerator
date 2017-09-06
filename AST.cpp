@@ -1,9 +1,10 @@
 #include "AST.h"
-#include<map>
-#include<string>
+#include <map>
+#include <string>
 #include <iostream>
 #include <stack>
 #include <list>
+#include <string.h>
 
 using namespace std;
 
@@ -33,60 +34,51 @@ void releaseTemp(string _temp) {
         tempsMap[_temp] = false;
 }
 
-retData * AddExpr::generateCode() {
-    retData *data = new retData();
-    retData *expr1Data = expr1->generateCode();
-    retData *expr2Data = expr2->generateCode();
+void AddExpr::generateCode(retData* data) {
+    retData *data1 = new retData();
+    retData *data2 = new retData();
+    expr1->generateCode(data1);
+    expr2->generateCode(data2);
 
-    releaseTemp(expr1Data->place);
-    releaseTemp(expr2Data->place);
+    releaseTemp(data1->place);
+    releaseTemp(data2->place);
 
-    string instruction = "add", place = getTemp();
+    string instruction = "add ", place = getTemp();
 
     if(this->expr1->isA(NUM_EXPR)) {
-        instruction = "addi";
+        instruction = "addi ";
     }
-    
-    data->code = instruction + place + "," + expr1Data->place + "," + expr2Data->place + "\n";
+    string newCode = strdup(data->code.c_str());
+    newCode += instruction + place + ", " + data1->place + ", " + data2->place + "\n";
+    data->code = newCode;
     data->place = place;
 
-    return data;
+    cout<< "dentro de genCode weon " << data->code;
 }
 
-retData * SubExpr::generateCode()  {
-    retData *data = new retData();
+void SubExpr::generateCode(retData* data) {
     data->code = "subExpr";
     data->place = "$t0";
-
-    return data;
 }
 
-retData * MultExpr::generateCode() {
-    retData *data = new retData();
+void MultExpr::generateCode(retData* data) {
     data->code = "multExpr";
     data->place = "$t0";
-
-    return data;
 }
 
-retData * NumExpr::generateCode() {
-    retData *data = new retData();
-
+void NumExpr::generateCode(retData* data) {
     string place = getTemp();
+
+    cout<< "dentro de NumExpr" << endl;
 
     data->code = "numExpr";
     data->place = place;
-
-    return data;
 }
 
-retData * IdExpr::generateCode() {
-    retData *data = new retData();
+void IdExpr::generateCode(retData* data) {
 
     string place = getTemp();
 
     data->code = "idExpr";
-    data->place = place;
-
-    return data;
+    data->place = this->id;
 }

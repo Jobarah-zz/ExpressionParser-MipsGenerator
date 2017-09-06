@@ -6,7 +6,7 @@ OBJFILES =${SRC_FILES:.cpp = .o}
 
 .PHONY: clean
 
-$(TARGET):$(OBJFILES)
+$(TARGET):$(OBJFILES) AST.h
 	g++ -std=c++11 -o $@ $^
 
 %.o: %.cpp tokens.h
